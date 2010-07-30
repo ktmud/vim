@@ -518,7 +518,7 @@ nmap <leader>fh :FufHelp<cr>
 autocmd FileType vim map <buffer> <leader><space> :w!<cr>:source %<cr>:w!<cr>
 "autocmd bufwritepost _vimrc source %
 
-" vimim.vim ÖÐÎÄÊäÈë·¨
+" vimim.vim ä¸­æ–‡è¾“å…¥æ³•
 let g:vimim_cloud_sogou=1
 let g:vimim_static_input_style=0
 
@@ -691,4 +691,4 @@ nmap <leader>.cdos :cd d:\projects\opensearch\demo\<cr>
 
 "}}}
 
-
+"æµ‹è¯•ä¸­æ–‡
