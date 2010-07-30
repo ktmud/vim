@@ -692,4 +692,3 @@ nmap <leader>.cdos :cd d:\projects\opensearch\demo\<cr>
 "}}}
 
 "测试中文
-"alala
