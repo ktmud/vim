@@ -692,5 +692,3 @@ nmap <leader>.cdos :cd d:\projects\opensearch\demo\<cr>
 "}}}
 
 "测试中文
-
-"哥也无能为力了.. 貌似VIM有开这个ticket commit信息里编码显示错误的bug的。
