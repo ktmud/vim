@@ -544,7 +544,7 @@ syntax enable
 
 if has("gui_running")
     colorscheme rdark
-    " Highlight current
+    " Highlight cursor position
     "set cursorline
     "set cursorcolumn
     " Toggle Menu and Toolbar and switch fullscreen mode
@@ -595,7 +595,7 @@ if has("win32") || has("win64")
     nmap <F6> :!start explorer /e,/select, %:p<CR>
     imap <F6> <C-o><F6>
     "view file in Chrome browser
-    map <silent> <F12> :!start "C:\Documents and Settings\qiuchi\Local Settings\Application Data\Google\Chrome\Application\chrome.exe" --enable-extension-timeline-api %:p<cr>
+    map <silent> <F12> :!start "C:\Users\Jesse\AppData\Local\Google\Chrome\Application\chrome.exe" --enable-extension-timeline-api %:p<cr>
     au FileType javascript map <f12> :call g:Jsbeautify()<cr>
 endif
 
@@ -633,7 +633,7 @@ if has("multi_byte")
         endif
     else
         "set fileencoding=utf-8
-        set enc=utf-8
+        set enc=chinese
         lang mes zh_CN.gbk
     endif
 
