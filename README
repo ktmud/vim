@@ -1,7 +1,11 @@
 丘迟（@ktmud jyyjcc#gmail.com）的 VIM配置文件及插件
 发扬 不折腾不舒夫斯基 精神，把VIM打造成最顺手的编辑器！
 
-只包含必要的配置文件和插件，以及修改过的部分自带文件。可以直接FORK本项目下所有文件，然后复制到VIM安装文件夹即可。不过， ctags.cnf 需要复制到 Windows 的用户目录。 WIN XP 下是 C:\Documents and Settings\Your-name ; Win 7 下是 C:\Users\Your-name
+只包含必要的配置文件和插件，以及修改过的部分自带文件。
+
+可以直接复制本项目所有文件到VIM安装文件夹（我的是 D:/dev/Vim/）即可。如果你的Vim没有安装在这里，那复制过后还需要在 _vimrc 中更改 ctags.exe 的地址。
+
+另外， ctags.cnf 需要复制到 Windows 的用户目录。 Win XP 下是 C:\Documents and Settings\Your-name ; Win 7 下是 C:\Users\Your-name
 
 跟着丘道长混，享受傻瓜化VIM配置，快速入门！
 

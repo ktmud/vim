@@ -324,7 +324,7 @@ nmap <leader>= :let cursorPos=getpos(".")<cr>gg=G:call setpos('.', cursorPos)<cr
 set laststatus=2
 
 function! CurDir()
-    let curdir = substitute(getcwd(), 'C:\Users\quichi', "~/", "g")
+    let curdir = substitute(getcwd(), $HOME, "~/", "g")
     return curdir
 endfunction
 
@@ -595,9 +595,13 @@ if has("win32") || has("win64")
     nmap <F6> :!start explorer /e,/select, %:p<CR>
     imap <F6> <C-o><F6>
     "view file in Chrome browser
-    map <silent> <F12> :!start "C:\Users\Jesse\AppData\Local\Google\Chrome\Application\chrome.exe" --enable-extension-timeline-api %:p<cr>
+    map <silent> <F12> :call Chromeit()<cr>
     au FileType javascript map <f12> :call g:Jsbeautify()<cr>
 endif
+
+function! Chromeit()
+    exec '!start "'.$HOME.'\AppData\Local\Google\Chrome\Application\chrome.exe" --enable-extension-timeline-api %:p"'
+endfunction
 
 function! SetFileEncodings(encodings)
     let b:my_fileencodings_bak=&fileencodings
