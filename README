@@ -1,4 +1,5 @@
 丘迟（@ktmud http://twitter.com/ktmud jyyjcc#gmail.com）的 VIM配置文件及插件
+
 发扬 不折腾不舒夫斯基 精神，把VIM打造成最顺手的编辑器！
 
 只包含必要的配置文件和插件，以及修改过的部分自带文件。
@@ -14,6 +15,3 @@
 初始上传版本，一些小配置还在改，还需慢慢添加 _vimrc 注释，说明那些小 hack 的出处。
 
 更多信息请参阅： http://ktmud.com
-
-让我们来试试超文本标记语言是否可用吧！ 
-<strong><a href="http://fallwith.me">点这里！我是牢骚王！</a></strong>
