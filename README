@@ -1,0 +1,12 @@
+丘迟（@ktmud jyyjcc#gmail.com）的 VIM配置文件及插件
+发扬 不折腾不舒夫斯基 精神，把VIM打造成最顺手的编辑器！
+
+只包含必要的配置文件和插件，以及修改过的部分自带文件。可以直接FORK本项目下所有文件，然后复制到VIM安装文件夹即可。不过， ctags.cnf 需要复制到 Windows 的用户目录。 WIN XP 下是 C:\Documents and Settings\Your-name ; Win 7 下是 C:\Users\Your-name
+
+跟着丘道长混，享受傻瓜化VIM配置，快速入门！
+
+建议下载后仔细阅读 _vimrc 文件，最好能搞懂每个选项都是什么用的（虽然现在我自己也不怎么搞得懂）。
+
+初始上传版本，一些小配置还在改，还需慢慢添加 _vimrc 注释，说明那些小 hack 的出处。
+
+更多信息请参阅： http://ktmud.com
