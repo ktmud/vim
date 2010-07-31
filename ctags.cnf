@@ -1,8 +1,10 @@
 --langdef=js
---langmap=JavaScript:.js
---regex-JavaScript=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\{/\1/o,object/
---regex-JavaScript=/([A-Za-z0-9._$'"()]+)[ \t]*[:][ \t]*function[ \t]*\([^)]*\)/\1/f,function/
+--langmap=javascript:.js
+--regex-JavaScript=/([A-Za-z0-9._$]+)[ \t]*[=][ \t]*\{/\1/o,object/
+--regex-JavaScript=/[']([A-Za-z0-9._$]+)['][ \t]*[:][ \t]*\{/\1/o,object/
+--regex-JavaScript=/["]([A-Za-z0-9._$]+)["][ \t]*[:][ \t]*\{/\1/o,object/
+--regex-JavaScript=/["']?([A-Za-z0-9._$()]+)["']?[ \t]*[:][ \t]*function[ \t]*\([^)]*\)/\1/f,function/
+--regex-JavaScript=/function[ \t]+([A-Za-z0-9._$]+)[ \t]*\(([^)])\)/\1/f,function/
 --regex-JavaScript=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\[/\1/a,array/
---regex-JavaScript=/([^= ]+)[ \t]*=[ \t]*'[^']*'/\1/s,string/
---regex-JavaScript=/([^= ]+)[ \t]*=[ \t]*"[^"]*"/\1/s,string/
-
+--regex-JavaScript=/(var|,)[ \t]+([^*= ]+)[ \t]*[^+=!&]=[ \t]*[^"]'[^']*/\2/s,string/
+--regex-JavaScript=/(var|,)[ \t]+([^*= ]+)[ \t]*[^+]=[ \t]*[^']"[^"]*/\2/s,string/

@@ -438,7 +438,7 @@ iabbrev </ </<C-X><C-O>
 let g:user_zen_expandabbr_key = '<M-e>'
 let g:user_zen_leader_key = ';'
 
-" html.vim
+" indent/html.vim
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 
@@ -447,29 +447,26 @@ nmap <leader>.y :YankRing<cr>
 " taglist.vim
 "set tags=./tags "now using autotags.vim to set tags
 map <F10> :TlistToggle<cr>
-let Tlist_Auto_Open=0 " let the tag list open automagically
+"let Tlist_Auto_Open=1 "let the tag list open automagically
+"let Tlist_Close_OnSelect = 1
 let Tlist_Compact_Format = 1 " show small menu
-let Tlist_Ctags_Cmd = 'd:\dev\vim\ctags.exe' "location of ctags
-let Tlist_Enable_Fold_Column = 0 " do show folding tree
-let Tlist_Exist_OnlyWindow = 1 " if you are the last, kill yourself
-let Tlist_File_Fold_Auto_Close = 0 " fold closed other trees
-let Tlist_Sort_Type = "name" " order by
-let Tlist_Use_Right_Window = 1 " split to the right side of the screen
-let Tlist_WinWidth = 35 " 35 cols wide, so i can (almost always) read my functions
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_Show_Menu = 1
+"ctags执行文件所在位置把VIM目录加入PATH系统变量就不用这句了
+"let Tlist_Ctags_Cmd = 'd:\dev\vim\ctags.exe' 
+"let Tlist_Enable_Fold_Column = 1 " do not show folding tree
+let Tlist_Exit_OnlyWindow = 1 " exit vim when only the taglist window is present.
+let Tlist_File_Fold_Auto_Close = 1 " fold taglists of unopened files.
 let Tlist_GainFocus_On_ToggleOpen = 1
-let Tlist_Close_OnSelect = 1
 let Tlist_Inc_Winwidth = 0
+"let Tlist_Show_Menu = 1 "turn on the gui menu
+let Tlist_Sort_Type = "name" " 指定为默认按字母顺序排序，可以在taglist窗口按 s 切换
+let Tlist_Use_Right_Window = 1 " split to the right side of the screen
+let Tlist_WinWidth = 35 " 
 let g:tlist_javascript_settings = 'javascript;f:function;c:class;o:object;m:method;s:string;a:array;n:constant'
 let tlist_php_settings = 'php;c:class;d:constant;f:function'
 
 " NERD_tree.vim
 map <F9> :NERDTreeToggle<cr>
 let NERDTreeIgnore=['\.pyc$','\.svn$','\.tmp$','\.bak','\~$','\.swp$']
-
-" matrix.vim
-map <leader>.m :Matrix<cr>
 
 " html.vim
 let g:no_html_toolbar = 1
@@ -496,7 +493,7 @@ let MRU_Add_Menu=1
 let MRU_File=$VIM . '\_vim_mru_files'
 
 " fencview.vim
-let g:fencview_autodetect = 0
+let g:fencview_autodetect = 1
 
 " acp.vim & SnipMate.vim
 let g:acp_behaviorSnipmateLength = 1
@@ -685,7 +682,7 @@ au FuncUndefined Syn* exec 'runtime autoload/' . expand('<afile>') . '.vim'
 " Automatically update change time
 "au BufWritePre *vimrc,*.vim   call UpdateLastChangeTime()
 "}}}
-"
+
 " For projects... {{{
 nmap <leader>.cdos :cd d:\projects\opensearch\demo\<cr>
 
