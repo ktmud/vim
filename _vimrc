@@ -98,8 +98,8 @@ nmap <leader>fi :set fdm=indent<cr>
 nmap <leader>fm :set fdm=marker<cr>
 nmap <leader>fs :set fdm=syntax<cr>
 " Audosave and autoload views, include foldings
-autocmd BufUnload *.* mkview
-autocmd BufRead *.* silent loadview
+autocmd BufWinLeave * mkview
+autocmd BufRead * silent loadview
 
 " Text options
 set expandtab
@@ -160,7 +160,7 @@ map <leader>M :%s/\r//g<cr>
 map <leader>q :q<cr>
 " Fast reloading of the .vimrc
 map <leader>s :source $V<cr>
-nnoremap <leader>.v :tabedit $V
+nnoremap <leader>.v :tabedit $V<cr>
 " Undolist
 map <leader>u :undolist<cr>
 " Fast saving
@@ -195,7 +195,6 @@ noremap <C-K> gk
 imap `j <cr><C-O>O
 " Remove tag content see :help object-select
 imap `i <C-O>cit
-
 
 " Move lines (Eclipse like)
 nmap <C-Down> :<C-u>move .+1<cr>
@@ -516,8 +515,7 @@ autocmd FileType vim map <buffer> <leader><space> :w!<cr>:source %<cr>:w!<cr>
 "autocmd bufwritepost _vimrc source %
 
 " vimim.vim 中文输入法
-let g:vimim_cloud_sogou=1
-let g:vimim_static_input_style=0
+let g:vimim_cloud_sogou=3
 
 " => Set OmniComplete
 set completeopt=longest,menu
@@ -540,10 +538,10 @@ imap <S-Space> <C-X><C-O>
 syntax enable
 
 if has("gui_running")
-    colorscheme peaksea
+    colorscheme molokai
     " Highlight cursor position
-    set cursorline
-    set cursorcolumn
+    "set cursorline
+    "set cursorcolumn
     " Toggle Menu and Toolbar and switch fullscreen mode
     "set guioptions-=B " Hide bottom scrollbar
     "set guioptions-=R " Hide right scrollbar
@@ -573,8 +571,7 @@ hi Pmenu guibg=#333333
 hi PmenuSel guibg=#555555 guifg=#ffffff
 
 " Syntax JavaScript
-autocmd FileType javascript set syntax=jquery
-let b:javascript_fold=1
+"let b:javascript_fold=1  "一旦使用语法折叠，会引起高亮显示错误... 可能语法配置有问题。暂时不能解决。 还是用人工折叠吧！
 let javascript_enable_domhtmlcss=1
 
 "}}}
