@@ -306,7 +306,7 @@ catch
 endtry
 
 " Indentation
-set autoindent
+set noautoindent
 set smartindent
 map <leader>t2 :set shiftwidth=2<cr>
 map <leader>t4 :set shiftwidth=4<cr>
@@ -450,7 +450,7 @@ map <F10> :TlistToggle<cr>
 "let Tlist_Auto_Open=1 "let the tag list open automagically
 "let Tlist_Close_OnSelect = 1
 let Tlist_Compact_Format = 1 " show small menu
-"ctagsæ‰§è¡Œæ–‡ä»¶æ‰€åœ¨ä½ç½®æŠŠVIMç›®å½•åŠ å…¥PATHç³»ç»Ÿå˜é‡å°±ä¸ç”¨è¿™å¥äº†
+"ctagsÖ´ĞĞÎÄ¼şËùÔÚÎ»ÖÃ°ÑVIMÄ¿Â¼¼ÓÈëPATHÏµÍ³±äÁ¿¾Í²»ÓÃÕâ¾äÁË
 "let Tlist_Ctags_Cmd = 'd:\dev\vim\ctags.exe' 
 "let Tlist_Enable_Fold_Column = 1 " do not show folding tree
 let Tlist_Exit_OnlyWindow = 1 " exit vim when only the taglist window is present.
@@ -458,7 +458,7 @@ let Tlist_File_Fold_Auto_Close = 1 " fold taglists of unopened files.
 let Tlist_GainFocus_On_ToggleOpen = 1
 let Tlist_Inc_Winwidth = 0
 "let Tlist_Show_Menu = 1 "turn on the gui menu
-let Tlist_Sort_Type = "name" " æŒ‡å®šä¸ºé»˜è®¤æŒ‰å­—æ¯é¡ºåºæ’åºï¼Œå¯ä»¥åœ¨taglistçª—å£æŒ‰ s åˆ‡æ¢
+let Tlist_Sort_Type = "name" " Ö¸¶¨ÎªÄ¬ÈÏ°´×ÖÄ¸Ë³ĞòÅÅĞò£¬¿ÉÒÔÔÚtaglist´°¿Ú°´ s ÇĞ»»
 let Tlist_Use_Right_Window = 1 " split to the right side of the screen
 let Tlist_WinWidth = 35 " 
 let g:tlist_javascript_settings = 'javascript;f:function;c:class;o:object;m:method;s:string;a:array;n:constant'
@@ -515,7 +515,7 @@ nmap <leader>fh :FufHelp<cr>
 autocmd FileType vim map <buffer> <leader><space> :w!<cr>:source %<cr>:w!<cr>
 "autocmd bufwritepost _vimrc source %
 
-" vimim.vim ä¸­æ–‡è¾“å…¥æ³•
+" vimim.vim ÖĞÎÄÊäÈë·¨
 let g:vimim_cloud_sogou=1
 let g:vimim_static_input_style=0
 
@@ -540,10 +540,10 @@ imap <S-Space> <C-X><C-O>
 syntax enable
 
 if has("gui_running")
-    colorscheme rdark
+    colorscheme peaksea
     " Highlight cursor position
-    "set cursorline
-    "set cursorcolumn
+    set cursorline
+    set cursorcolumn
     " Toggle Menu and Toolbar and switch fullscreen mode
     "set guioptions-=B " Hide bottom scrollbar
     "set guioptions-=R " Hide right scrollbar
@@ -564,9 +564,8 @@ if has("gui_running")
         "set lines=999 columns=9999
     end
 else
-    set background=dark
     "colorscheme zellner
-    colorscheme torte
+    colorscheme astronaut
 endif
 
 " Omni menu colors
@@ -610,39 +609,37 @@ function! RestoreFileEncodings()
     unlet b:my_fileencodings_bak
 endfunction
 
-if has("multi_byte")
-    set encoding=utf-8
-    set fileencoding=chinese
-    set fileencodings=ucs-bom,gb18030,gbk,utf-8,big5,euc-jp,euc-kr,latin1
-    set formatoptions+=mM
-    set nobomb " Don' use Unicode
+set fileencoding=chinese
+set fileencodings=ucs-bom,utf-8,gb18030,gbk,big5,euc-jp,euc-kr,latin1
+set formatoptions+=mM
+set nobomb " Don' use Unicode
 
-    if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
-        set ambiwidth=double
-    endif
-
-    if has("gui_running")
-        set langmenu=zh_CN
-        "let $LANG='chinese'
-        "language messages en_US.utf-8
-        language messages zh_CN.utf-8
-        "let &termencoding=&encoding
-        source $VIMRUNTIME\delmenu.vim
-        source $VIMRUNTIME\menu.vim
-        if version >= 603
-            set helplang=cn
-        endif
-    else
-        "set fileencoding=utf-8
-        set enc=chinese
-        lang mes zh_CN.gbk
-    endif
-
-    " Convert fileencoding to gbk
-    nmap <leader>gbk :set fenc=gbk<cr>,w
-else
-    echoerr "Sorry, this version of gvim was not compiled with +multi_byte"
+if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
+    set ambiwidth=double
 endif
+
+
+if has("gui_running")
+    set encoding=utf-8
+    set langmenu=zh_CN
+    "let $LANG='chinese'
+    "language messages en_US.utf-8
+    language messages zh_CN.utf-8
+    "let &termencoding=&encoding
+    source $VIMRUNTIME\delmenu.vim
+    source $VIMRUNTIME\menu.vim
+    if version >= 603
+        set helplang=cn
+    endif
+else
+    "set fileencoding=utf-8
+    lang mes zh_CN
+    set encoding=chinese
+endif
+
+" Convert fileencoding
+nmap <leader>gbk :set fenc=gbk<cr>,w
+nmap <leader>utf :set fenc=utf-8<cr>,w
 
 " }}}
 
@@ -688,4 +685,4 @@ nmap <leader>.cdos :cd d:\projects\opensearch\demo\<cr>
 
 "}}}
 
-"æµ‹è¯•ä¸­æ–‡
+"²âÊÔÖĞÎÄ
