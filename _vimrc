@@ -39,6 +39,8 @@ set ruler
 set cmdheight=2
 " Show line number
 set number
+" line height, the space between each line, in pixel
+set lsp=2
 " Do not redraw, when running macros.. lazyredraw
 set lazyredraw
 " Change buffer - without saving
@@ -91,15 +93,15 @@ set title
 set iskeyword+=_,$,@,%,#,- et title
 
 "set foldopen
-set foldmethod=marker   "fold based on marker
+set foldmethod=marker  "fold based on marker
 set foldnestmax=10     "deepest fold is 10 levels
 nmap <leader>fn :set fdm=manual<cr>
 nmap <leader>fi :set fdm=indent<cr>
 nmap <leader>fm :set fdm=marker<cr>
 nmap <leader>fs :set fdm=syntax<cr>
 " Audosave and autoload views, include foldings
-autocmd BufWinLeave * mkview
-autocmd BufRead * silent loadview
+autocmd BufWinLeave */* mkview  " */* 的写法是为了避免没有文件名的错误，同时又能包含所有文件
+autocmd BufRead */* silent loadview
 
 " Text options
 set expandtab
@@ -113,6 +115,8 @@ set isfname-=\= " fix filename completion in VAR=/path
 
 " Don't display start text :help iccf
 set shortmess=atI
+
+set shellslash
 
 " }}}
 
@@ -134,8 +138,16 @@ vmap <leader>.x "+x
 vmap <C-c> "+y
 vmap <C-x> "+x
 map <leader>.v "+gp
-inoremap <leader>.v <C-O>"+gp
-inoremap <C-v> <C-O>"+gp
+inoremap <leader>.v <C-O>"+gP
+inoremap <silent> <C-v> <C-o>"+gP
+vnoremap <silent> <C-v> <Delete>"+gpa
+
+function! ImapPaste()
+    if col('.') == col('$') "如果光标在行尾
+    else
+    endif
+endfunction
+"妈的，解决不了！
 
 " Set clipboard+=unnamed
 
@@ -165,8 +177,8 @@ nnoremap <leader>.v :tabedit $V<cr>
 map <leader>u :undolist<cr>
 " Fast saving
 map <leader>w :w!<cr>
-map <silent> <C-S> :if expand("%") == ""<Bar>browse confirm w<Bar>else<Bar>confirm w<Bar>endif<CR>
-imap <silent> <C-S> <C-o>:if expand("%") == ""<Bar>browse confirm w<Bar>else<Bar>confirm w<Bar>endif<CR>
+nmap <silent> <C-S> :if expand("%") == ""<Bar>browse confirm w<Bar>else<Bar>confirm w<Bar>endif<CR>
+imap <silent> <C-S> <C-o><C-s>
 map <silent> <S-s> :browse confirm saveas<CR>
 
 " Mapping Q to exit instead of Ex mode
@@ -462,18 +474,26 @@ let Tlist_Use_Right_Window = 1 " split to the right side of the screen
 let Tlist_WinWidth = 35 " 
 let g:tlist_javascript_settings = 'javascript;f:function;c:class;o:object;m:method;s:string;a:array;n:constant'
 let tlist_php_settings = 'php;c:class;d:constant;f:function'
+let g:tlist_ant_settings = 'ant;p:Project;t:Target;r:Property'
+
+" ant_menu.vim
+let g:buildFile = 'build.xml'
+let g:antOption = '-debug'
+let g:logFile = 'build.log' 
+"set shellpipe="2>"
+
 
 " NERD_tree.vim
 map <F9> :NERDTreeToggle<cr>
 let NERDTreeIgnore=['\.pyc$','\.svn$','\.tmp$','\.bak','\~$','\.swp$']
 
 " html.vim
-let g:no_html_toolbar = 1
-let g:do_xhtml_mappings = 'yes'
-let g:html_tag_case = 'lowercase'
+"let g:no_html_toolbar = 1
+"let g:do_xhtml_mappings = 'yes'
+"let g:html_tag_case = 'lowercase'
 
 " closetag.vim
-let g:closetag_html_style=1
+"let g:closetag_html_style=1
 
 " ToHTML
 let use_xhtml = 1
@@ -589,7 +609,7 @@ if has("win32") || has("win64")
     imap <F6> <C-o><F6>
     "view file in Chrome browser
     map <silent> <F12> :call Chromeit()<cr>
-    au FileType javascript map <f12> :call g:Jsbeautify()<cr>
+    au FileType javascript map <buffer> <f12> :call g:Jsbeautify()<cr>
 endif
 
 function! Chromeit()

@@ -8,3 +8,8 @@
 --regex-JavaScript=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\[/\1/a,array/
 --regex-JavaScript=/(var|,)[ \t]+([^*= ]+)[ \t]*[^+=!&]=[ \t]*[^"]'[^']*/\2/s,string/
 --regex-JavaScript=/(var|,)[ \t]+([^*= ]+)[ \t]*[^+]=[ \t]*[^']"[^"]*/\2/s,string/
+--langdef=ant
+--langmap=ant:.xml
+--regex-ant=/^[ \t]*<[ \t]*project.*name="([^<"&]+)".*>/\1/p,project/i
+--regex-ant=/^[ \t]*<[ \t]*target.*name="([^<"&]+)".*>/\1/t,target/i
+--regex-ant=/^[ \t]*<[ \t]*property.*name="([^<"&]+)".*>/\1/r,property/i

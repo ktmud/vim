@@ -38,7 +38,7 @@ syntax region  javaScriptLineComment    start=+^\s*\/\/+ skip=+\n\s*\/\/+ end=+$
 syntax region  javaScriptCvsTag         start="\$\cid:" end="\$" oneline contained
 syntax region  javaScriptComment        start="/\*"  end="\*/" contains=javaScriptCommentTodo,javaScriptCvsTag,@Spell fold
 
-"" JSDoc support start
+"" JSDoc support start"{{{
 if !exists("javascript_ignore_javaScriptdoc")
   syntax case ignore
 
@@ -53,10 +53,11 @@ if !exists("javascript_ignore_javaScriptdoc")
   syntax region javaScriptDocSeeTag     contained matchgroup=javaScriptDocSeeTag start="{" end="}" contains=javaScriptDocTags
 
   syntax case match
-endif   "" JSDoc end
-
+endif   "" JSDoc end"}}}
 
 syn match   javaScriptSpecialCharacter "'\\.'"
+syn region  javaScriptStringD          start=+"+  skip=+\\\\\|\\"+  end=+"\|$+  contains=javaScriptSpecial,@htmlPreproc,@jSelectors
+syn region  javaScriptStringS          start=+'+  skip=+\\\\\|\\'+  end=+'\|$+  contains=javaScriptSpecial,@htmlPreproc,@jSelectors
 
 "syn match   javaScriptNumber	       "-\=\<\d\+L\=\>\|0[xX][0-9a-fA-F]\+\>"
 syn match   javaScriptConstant		   /[A-Z_]{2,}/
@@ -182,8 +183,6 @@ syn keyword jUtilities      contained isArray isEmptyObject isFunction isPlainOb
 syn keyword jUtilities      contained trim param
 
 syn cluster jSelectors      contains=jId,jClass,jOperators,jBasicFilters,jContentFilters,jVisibility,jChildFilters,jForms,jFormFilters
-syn region  javaScriptStringD          start=+"+  skip=+\\\\\|\\"+  end=+"\|$+  contains=javaScriptSpecial,@htmlPreproc,@jSelectors
-syn region  javaScriptStringS          start=+'+  skip=+\\\\\|\\'+  end=+'\|$+  contains=javaScriptSpecial,@htmlPreproc,@jSelectors
 syn match   jId             contained /#[0-9A-Za-z_\-]\+/
 syn match   jClass          contained /\.[0-9A-Za-z_\-]\+/
 syn match   jOperators      contained /\*\|\~/
@@ -290,8 +289,6 @@ else
     syn match	javaScriptComma     	   "[,]"
     syn match	javaScriptColon     	   "[:]"
     syn match	javaScriptSemiColon    	   "[;]"
-    syn match	javaScriptSingleQuote  	   "[']"
-    syn match	javaScriptQuote  	   "[\"]"
     syn match	javaScriptQuestionMark 	   "[?]"
     setlocal foldmethod<
     setlocal foldlevel<
@@ -413,7 +410,6 @@ if version >= 508 || !exists("did_javascript_syn_inits")
   HiLink jChildFilters   Statement
   HiLink jForms          Statement
   HiLink jFormFilters    Statement
-
   delcommand HiLink
 endif
 

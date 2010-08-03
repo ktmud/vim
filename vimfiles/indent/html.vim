@@ -501,7 +501,6 @@ func! HtmlIndent() "{{{
         call extend(b:indent, s:newstate, "force")
         return indent
     endif
-
 endfunc "}}}
 
 " check user settings (first time), clear cpo, Modeline: {{{1
