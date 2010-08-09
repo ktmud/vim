@@ -17,7 +17,7 @@ else
     let $V = $HOME.'/.vimrc'
 endif
 
-" }}}
+" basic end }}}
 
 " => VIM UserInterface Settings {{{
 
@@ -94,14 +94,17 @@ set iskeyword+=_,$,@,%,#,- et title
 
 "set foldopen
 set foldmethod=marker  "fold based on marker
+set foldmarker={{{,}}}
+nmap <leader>.m1 :setlocal fmr={{{,}}}<cr>
+nmap <leader>.m2 :setlocal fmr=>>>,<<<<cr>
 set foldnestmax=10     "deepest fold is 10 levels
 nmap <leader>fn :set fdm=manual<cr>
 nmap <leader>fi :set fdm=indent<cr>
 nmap <leader>fm :set fdm=marker<cr>
 nmap <leader>fs :set fdm=syntax<cr>
 " Audosave and autoload views, include foldings
-autocmd BufWinLeave */* mkview  " */* 的写法是为了避免没有文件名的错误，同时又能包含所有文件
-autocmd BufRead */* silent loadview
+autocmd BufWinLeave {*.css,*.html,*.htm,*.js*.vim,*.info,*.txt,*vimrc,*.snippets} mkview 
+autocmd BufRead {*.css,*.html,*.htm,*.js*.vim,*.info,*.txt,*vimrc,*.snippets} silent loadview
 
 " Text options
 set expandtab
@@ -118,7 +121,7 @@ set shortmess=atI
 
 set shellslash
 
-" }}}
+" interface end }}}
 
 " => Shortcuts Mapping {{{
 
@@ -139,15 +142,10 @@ vmap <C-c> "+y
 vmap <C-x> "+x
 map <leader>.v "+gp
 inoremap <leader>.v <C-O>"+gP
-inoremap <silent> <C-v> <C-o>"+gP
-vnoremap <silent> <C-v> <Delete>"+gpa
-
-function! ImapPaste()
-    if col('.') == col('$') "如果光标在行尾
-    else
-    endif
-endfunction
-"妈的，解决不了！
+nnoremap <C-v> "+p
+inoremap <C-v> <C-r>+
+vnoremap <C-v> <Delete>i<C-r>+
+" 我靠，原来用<C-R>就能解决问题！
 
 " Set clipboard+=unnamed
 
@@ -158,7 +156,7 @@ inoremap <C-y> <C-o><C-r>
 nnoremap t <C-r>
 
 
-"}}}
+"end }}}
 
 " BufExplorer
 map <leader>b :BufExplorer<cr>
@@ -178,7 +176,7 @@ map <leader>u :undolist<cr>
 " Fast saving
 map <leader>w :w!<cr>
 nmap <silent> <C-S> :if expand("%") == ""<Bar>browse confirm w<Bar>else<Bar>confirm w<Bar>endif<CR>
-imap <silent> <C-S> <C-o><C-s>
+imap <silent> <C-S> <Esc><C-s>a
 map <silent> <S-s> :browse confirm saveas<CR>
 
 " Mapping Q to exit instead of Ex mode
@@ -238,7 +236,7 @@ map <leader>$ :syntax sync fromstart<cr>
 au BufRead */doc/* nnoremap <buffer> <silent> q :close<cr>
 au BufRead */doc/* set buftype=help
 
-"}}}
+" mapping end }}}
 
 " => tabs, windows, indentation {{{
 
@@ -301,7 +299,7 @@ function! TabCloseCheck()
     if tabpagenr('$') == 1
         let choice = confirm("Close the last tab?", "&Yes\n&No", 1, "Warning")
         if choice == 1
-            exe 'conirm q'
+            exe 'confirm q'
         else
             return
         endif
@@ -317,7 +315,7 @@ catch
 endtry
 
 " Indentation
-set noautoindent
+set autoindent
 set smartindent
 map <leader>t2 :set shiftwidth=2<cr>
 map <leader>t4 :set shiftwidth=4<cr>
@@ -327,7 +325,7 @@ nmap <leader>= :let cursorPos=getpos(".")<cr>gg=G:call setpos('.', cursorPos)<cr
 
 " Favorite filetypes
 "set fileformats=unix,dos,mac
-"}}}
+" tabs end }}}
 
 " => Statusline {{{
 
@@ -342,16 +340,7 @@ endfunction
 "Format the statusline
 set statusline=%#Pmenu#%M%*\%F\ %r%h%w[%Y,%{&ff},%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ @%v\ %l/%L\ %#Pmenu#%p%%%*\ %r%{CurDir()} 
 
-" Function to insert the current date
-function! InsertCurrentDate()
-    let curr_date=strftime('%Y-%m-%d %X', localtime())
-    silent! exec 'normal! gi' .  curr_date . "\<ESC>"
-endfunction
-
-" Key mapping to insert the current date
-inoremap <silent> <C-D> <C-O>:call InsertCurrentDate()<CR>
-
-"}}}
+" statusline end }}}
 
 " => Visual {{{
 vnoremap <BS> <Delete>i
@@ -374,20 +363,25 @@ endfunction
 vnoremap <silent> * :call VisualSearch('f')<cr>
 vnoremap <silent> # :call VisualSearch('b')<cr>
 
-"}}}
+" Replace
+nmap <M-h> :%s//
+imap <M-h> :%s//
+vmap <M-h> #
+
+" visual end }}}
 
 " => Parenthesis/bracket expanding {{{
 
 " Map auto complete of (, ", ', [,{
 "inoremap ( ()<ESC>i
-inoremap <silent> ( <c-r>=OpenPair('(')<CR>
-inoremap <silent> ) <c-r>=ClosePair(')')<CR>
+"inoremap <silent> ( <c-r>=OpenPair('(')<CR>
+"inoremap <silent> ) <c-r>=ClosePair(')')<CR>
 "inoremap { {}<ESC>i
-inoremap <silent> { <c-r>=OpenPair('{')<CR>
-inoremap <silent> } <c-r>=ClosePair('}')<CR>
+"inoremap <silent> { <c-r>=OpenPair('{')<CR>
+"inoremap <silent> } <c-r>=ClosePair('}')<CR>
 "inoremap [ []<ESC>i
-inoremap <silent> [ <c-r>=OpenPair('[')<CR>
-inoremap <silent> ] <c-r>=ClosePair(']')<CR>
+"inoremap <silent> [ <c-r>=OpenPair('[')<CR>
+"inoremap <silent> ] <c-r>=ClosePair(']')<CR>
 "inoremap < <><ESC>i
 "inoremap < <c-r>=OpenPair('<')<CR>
 "inoremap > <c-r>=ClosePair('>')<CR>
@@ -414,9 +408,9 @@ function! ClosePair(char)
     endif
 endf
 
-inoremap ' <c-r>=CompleteQuote("'")<CR>
-inoremap " <c-r>=CompleteQuote('"')<CR>
-autocmd FileType vim inoremap <buffer> " "
+"inoremap ' <c-r>=CompleteQuote("'")<CR>
+"inoremap " <c-r>=CompleteQuote('"')<CR>
+"autocmd FileType vim inoremap <buffer> " "
 function! CompleteQuote(quote)
     let ql = len(split(getline('.'), a:quote, 1))-1
     " a:quote length is odd.
@@ -441,7 +435,7 @@ vnoremap #" <esc>`>a"<esc>`<i"<esc>
 iabbrev </ </<C-X><C-O>
 
 
-"}}}
+"bracets end }}}
 
 " => Plugin Settings {{{
 
@@ -502,11 +496,11 @@ let html_number_lines = 0
 
 " mru.vim (History file List, Most Recent Used)
 map <leader>.r :MRU<cr>
-let MRU_Max_Entries = 50
+let MRU_Max_Entries=80
 "let MRU_Exclude_Files='^/tmp/.*\|^/var/tmp/.*'
 let MRU_Include_Files='\.css$\|\.html$\|\.htm$\|\.js$\|\.vim$\|\.info$\|\.txt$\|vimrc$\|\.snippets'
 
-let MRU_Window_Height=15
+let MRU_Window_Height=20
 let MRU_Filter_Not_Exists=1
 let MRU_Add_Menu=1
 let MRU_File=$VIM . '\_vim_mru_files'
@@ -540,18 +534,18 @@ let g:vimim_cloud_sogou=3
 " => Set OmniComplete
 set completeopt=longest,menu
 set ofu=syntaxcomplete#Complete
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType javascript set dictionary+=$VIMFILES\dict\javascript.dict
-autocmd FileType html,htm set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType javascript setlocal dictionary+=$VIMFILES\dict\javascript.dict
+autocmd FileType html,htm setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
 autocmd FileType php setlocal dict+=$VIMFILES\dict\php_functions.txt
-autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd FileType c setlocal omnifunc=ccomplete#Complete
 imap <S-Space> <C-X><C-O>
 
-" }}}
+" plugin end }}}
 
 " => Colors & Fonts & Syntax {{{
 " Enable syntax
@@ -594,7 +588,7 @@ hi PmenuSel guibg=#555555 guifg=#ffffff
 "let b:javascript_fold=1  "一旦使用语法折叠，会引起高亮显示错误... 可能语法配置有问题。暂时不能解决。 还是用人工折叠吧！
 let javascript_enable_domhtmlcss=1
 
-"}}}
+"end }}}
 
 " => File Operation and encodings{{{
 
@@ -658,7 +652,7 @@ endif
 nmap <leader>gbk :set fenc=gbk<cr>,w
 nmap <leader>utf :set fenc=utf-8<cr>,w
 
-" }}}
+" end }}}
 
 " => Misc  {{{
 
@@ -695,11 +689,21 @@ au FuncUndefined Syn* exec 'runtime autoload/' . expand('<afile>') . '.vim'
 
 " Automatically update change time
 "au BufWritePre *vimrc,*.vim   call UpdateLastChangeTime()
-"}}}
+
+" Function to insert the current date
+function! InsertCurrentDate()
+    let curr_date=strftime('%Y-%m-%d %X', localtime())
+    silent! exec 'normal! gi' .  curr_date . "\<ESC>"
+endfunction
+
+" Key mapping to insert the current date
+inoremap <silent> <C-D> <C-O>:call InsertCurrentDate()<CR>
+
+"end }}}
 
 " For projects... {{{
 nmap <leader>.cdos :cd d:\projects\opensearch\demo\<cr>
 
-"}}}
+"end }}}
 
 "测试中文

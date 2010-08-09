@@ -4,7 +4,7 @@
 
 只包含必要的配置文件和插件，以及修改过的部分自带文件。
 
-可以直接复制本项目所有文件到VIM安装文件夹（我的是 D:/dev/Vim/）即可。记得把此Vim根目录添加到系统变量PATH中，否则ctags和iconv，vimim都不能正常工作。
+可以直接复制本项目所有文件到VIM安装文件夹（我的是 D:/dev/Vim/）即可。记得把此Vim根目录添加到系统变量PATH中，否则ctags（用于生成程序标签，快捷键<F10>）和iconv（用于字符转换）不能正常工作。
 
 另外， ctags.cnf 需要复制到 Windows 的用户目录。 Win XP 下是 C:\Documents and Settings\Your-name ; Win 7 下是 C:\Users\Your-name
 

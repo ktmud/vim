@@ -34,7 +34,7 @@ hi Cursor    guifg=black   guibg=#b0b4b8
 hi lCursor   guifg=black   guibg=white
 hi LineNr    guifg=#ffffff guibg=#c0d0e0
 
-hi Normal    guifg=#404850   guibg=#f0f0f0
+hi Normal    guifg=#303233   guibg=#ffffff
 
 hi StatusLine guifg=white guibg=#8090a0 gui=bold,italic
 hi StatusLineNC guifg=#506070 guibg=#a0b0c0 gui=italic
