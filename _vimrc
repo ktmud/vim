@@ -70,7 +70,7 @@ set showfulltag
 set mat=2
 " Highlight search things
 set hlsearch
-nmap <silent> <F2> <esc>:call ToggleHighLightSearch()<cr>
+nmap <silent> <F3> <esc>:call ToggleHighLightSearch()<cr>
 func! ToggleHighLightSearch()
     if &hls
         set nohls
@@ -220,7 +220,9 @@ vmap <C-Up> :move '<-2<cr>gv
 " Remove indentation on empty lines
 map <leader>ri :%s/\s*$//g<cr>:noh<cr>
 " Paste toggle - when pasting something in, don't indent.
-"set pastetoggle=<F3>
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+set showmode
 " SVN Diff
 map <F8> :new<cr>:read !svn diff<cr>:set syntax=diff buftype=nofile<cr>gg
 
