@@ -70,7 +70,7 @@ set showfulltag
 set mat=2
 " Highlight search things
 set hlsearch
-nmap <silent> <F3> <esc>:call ToggleHighLightSearch()<cr>
+nmap <silent> <F2> <esc>:call ToggleHighLightSearch()<cr>
 func! ToggleHighLightSearch()
     if &hls
         set nohls
@@ -103,8 +103,8 @@ nmap <leader>fi :set fdm=indent<cr>
 nmap <leader>fm :set fdm=marker<cr>
 nmap <leader>fs :set fdm=syntax<cr>
 " Audosave and autoload views, include foldings
-autocmd BufWinLeave {*.css,*.html,*.htm,*.js*.vim,*.info,*.txt,*vimrc,*.snippets} mkview 
-autocmd BufRead {*.css,*.html,*.htm,*.js*.vim,*.info,*.txt,*vimrc,*.snippets} silent loadview
+autocmd BufWinLeave {*.css,*.html,*.htm,*.php,*.js,*.vim,*.info,*.txt,*vimrc,*.snippets} mkview 
+autocmd BufRead {*.css,*.html,*.htm,*.php,*.js,*.vim,*.info,*.txt,*vimrc,*.snippets} silent loadview
 
 " Text options
 set expandtab
@@ -143,6 +143,7 @@ vmap <C-x> "+x
 map <leader>.v "+gp
 inoremap <leader>.v <C-O>"+gP
 nnoremap <C-v> "+p
+"使用lmap就可以在命令行模式也粘贴
 inoremap <C-v> <C-r>+
 vnoremap <C-v> <Delete>i<C-r>+
 " 我靠，原来用<C-R>就能解决问题！
@@ -203,7 +204,8 @@ noremap <C-K> gk
 
 " Usefull when insert a new indent line
 imap `j <cr><C-O>O
-" Remove tag content see :help object-select
+" Remove tag content | see :help object-select
+nmap `i cit
 imap `i <C-O>cit
 
 " Move lines (Eclipse like)
@@ -220,23 +222,37 @@ vmap <C-Up> :move '<-2<cr>gv
 " Remove indentation on empty lines
 map <leader>ri :%s/\s*$//g<cr>:noh<cr>
 " Paste toggle - when pasting something in, don't indent.
-nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
+nnoremap <F3> :set invpaste paste?<CR>
+set pastetoggle=<F3>
 set showmode
 " SVN Diff
 map <F8> :new<cr>:read !svn diff<cr>:set syntax=diff buftype=nofile<cr>gg
 
 " Some nice mapping to switch syntax (useful if one mixes different languages in one file)
-map <leader>th :set syntax=html<cr>
+map <leader>th :set ft=html<cr>
 map <leader>tc :set ft=css<cr>
 map <leader>tj :set ft=javascript<cr>
-map <leader>ty :set syntax=python<cr>
+map <leader>ty :set ft=python<cr>
 map <leader>tp :set ft=php<cr>
 map <leader>$ :syntax sync fromstart<cr>
+
+
+" Format all and then pos the cursor back
+nmap <silent> <leader>= :let cursorPos=getpos(".")<cr>gg=G:call setpos('.', cursorPos)<cr>:unlet cursorPos<cr>
+" Format a compressed css file
+map <leader>.fc :%s/;\s*\([a-z*_-}]\)/;\r\1/g<cr>:%s/\(\w\)\s*{\([^\r]\)/\1\s{\r\2/g<cr>:%s/:\(\w\)/:\ \1/g<cr>:%s/}\(\w\\|#\\|\.\)/}\r\1/g<cr>,=
+
+function! FormartCSS()
+    let cursorPos = getPos(".")
+    substitute(%)
+endfunction
 
 " Quit readonly files (like help.cnx) quickly
 au BufRead */doc/* nnoremap <buffer> <silent> q :close<cr>
 au BufRead */doc/* set buftype=help
+
+
+" === operator-pending mode ==
 
 " mapping end }}}
 
@@ -273,10 +289,12 @@ function! <SID>BufcloseCloseIt()
 endfunction
 
 " Tab key to indent
-imap <Tab> <C-o>v>
-imap <S-Tab> <C-o>v<
-vmap <Tab> >gv
-vmap <S-Tab> <gv
+nnoremap <Tab> >>
+nnoremap <S-Tab> <<
+inoremap <Tab> <C-o>v>
+inoremap <S-Tab> <C-o>v<
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
 
 " Jump between windows
 nmap <M-z> <C-w>W
@@ -322,9 +340,6 @@ set smartindent
 map <leader>t2 :set shiftwidth=2<cr>
 map <leader>t4 :set shiftwidth=4<cr>
 
-" Format all and then pos the cursor back
-nmap <leader>= :let cursorPos=getpos(".")<cr>gg=G:call setpos('.', cursorPos)<cr>:unlet cursorPos<cr>
-
 " Favorite filetypes
 "set fileformats=unix,dos,mac
 " tabs end }}}
@@ -366,9 +381,9 @@ vnoremap <silent> * :call VisualSearch('f')<cr>
 vnoremap <silent> # :call VisualSearch('b')<cr>
 
 " Replace
-nmap <M-h> :%s//
-imap <M-h> :%s//
-vmap <M-h> #
+nmap <leader>s :%s//
+imap <leader>s :%s//
+vmap <leader>s #
 
 " visual end }}}
 
@@ -397,9 +412,9 @@ function! OpenPair(char)
     let ol = len(split(getline('.'), a:char, 1))-1
     let cl = len(split(getline('.'), PAIRs[a:char], 1))-1
     "if ol==cl
-        return a:char . PAIRs[a:char] . "\<Left>"
+    return a:char . PAIRs[a:char] . "\<Left>"
     "else
-        return a:char
+    return a:char
     "endif
 endfunction
 function! ClosePair(char)
@@ -482,6 +497,7 @@ let g:logFile = 'build.log'
 " NERD_tree.vim
 map <F9> :NERDTreeToggle<cr>
 let NERDTreeIgnore=['\.pyc$','\.svn$','\.tmp$','\.bak','\~$','\.swp$']
+let NERDTreeQuitOnOpen=1
 
 " html.vim
 "let g:no_html_toolbar = 1
@@ -500,7 +516,7 @@ let html_number_lines = 0
 map <leader>.r :MRU<cr>
 let MRU_Max_Entries=80
 "let MRU_Exclude_Files='^/tmp/.*\|^/var/tmp/.*'
-let MRU_Include_Files='\.css$\|\.html$\|\.htm$\|\.js$\|\.vim$\|\.info$\|\.txt$\|vimrc$\|\.snippets'
+let MRU_Include_Files='\.css$\|\.html$\|\.htm$\|\.php\|\.js$\|\.vim$\|\.info$\|\.txt$\|vimrc$\|\.snippets'
 
 let MRU_Window_Height=20
 let MRU_Filter_Not_Exists=1
@@ -570,7 +586,7 @@ if has("gui_running")
     "map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
     " Auto Maximize when vim starts.
     if has("win32")
-        exec 'set guifont='.iconv('Courier_New', &enc, 'gbk').':h12:cANSI'
+        exec 'set guifont='.iconv('Courier\ New', &enc, 'gbk').':h12:cANSI'
         exec 'set guifontwide='.iconv('Yahei\ Mono', &enc, 'gbk').':h12'
         au GUIEnter * simalt ~x
     elseif has("unix")
@@ -704,7 +720,7 @@ inoremap <silent> <C-D> <C-O>:call InsertCurrentDate()<CR>
 "end }}}
 
 " For projects... {{{
-nmap <leader>.cdos :cd d:\projects\opensearch\demo\<cr>
+nmap <leader>.cdos :cd d:\projects\opensearch\<cr>
 
 "end }}}
 
