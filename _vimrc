@@ -103,8 +103,8 @@ nmap <leader>fi :set fdm=indent<cr>
 nmap <leader>fm :set fdm=marker<cr>
 nmap <leader>fs :set fdm=syntax<cr>
 " Audosave and autoload views, include foldings
-autocmd BufWinLeave {*.css,*.html,*.htm,*.php,*.js,*.vim,*.info,*.txt,*vimrc,*.snippets} mkview 
-autocmd BufRead {*.css,*.html,*.htm,*.php,*.js,*.vim,*.info,*.txt,*vimrc,*.snippets} silent loadview
+autocmd BufWinLeave {*.css,*.html,*.htm,*.php,*.js,*.json,*.vim,*.info,*.txt,*vimrc,*.snippets} mkview 
+autocmd BufRead {*.css,*.html,*.htm,*.php,*.js,*.json,*.vim,*.info,*.txt,*vimrc,*.snippets} silent loadview
 
 " Text options
 set expandtab
@@ -143,10 +143,10 @@ vmap <C-x> "+x
 map <leader>.v "+gp
 inoremap <leader>.v <C-O>"+gP
 nnoremap <C-v> "+p
-"Ê¹ÓÃlmap¾Í¿ÉÒÔÔÚÃüÁîĞĞÄ£Ê½Ò²Õ³Ìù
+"ä½¿ç”¨lmapå°±å¯ä»¥åœ¨å‘½ä»¤è¡Œæ¨¡å¼ä¹Ÿç²˜è´´
 inoremap <C-v> <C-r>+
 vnoremap <C-v> <Delete>i<C-r>+
-" ÎÒ¿¿£¬Ô­À´ÓÃ<C-R>¾ÍÄÜ½â¾öÎÊÌâ£¡
+" æˆ‘é ï¼ŒåŸæ¥ç”¨<C-R>å°±èƒ½è§£å†³é—®é¢˜ï¼
 
 " Set clipboard+=unnamed
 
@@ -164,7 +164,7 @@ map <leader>b :BufExplorer<cr>
 " Switch to current dir, see also :set autochdir
 map <leader>cd :cd %:p:h<cr>
 " Temp text buffer
-map <leader>e :e ~/.buffer<cr>
+"map <leader>e :e ~/.buffer<cr>
 " Remove the Windows ^M
 map <leader>M :%s/\r//g<cr>
 " Fast Quit
@@ -219,7 +219,7 @@ vmap <C-Up> :move '<-2<cr>gv
 " Use shell with ctrl-z
 "map <C-Z> :shell<cr>
 
-" Remove indentation on empty lines
+" Remove indentation on empty lines ä»¥åŠè¡Œå°¾ç©ºç™½
 map <leader>ri :%s/\s*$//g<cr>:noh<cr>
 " Paste toggle - when pasting something in, don't indent.
 nnoremap <F3> :set invpaste paste?<CR>
@@ -472,7 +472,7 @@ map <F10> :TlistToggle<cr>
 "let Tlist_Auto_Open=1 "let the tag list open automagically
 "let Tlist_Close_OnSelect = 1
 let Tlist_Compact_Format = 1 " show small menu
-"ctagsÖ´ĞĞÎÄ¼şËùÔÚÎ»ÖÃ°ÑVIMÄ¿Â¼¼ÓÈëPATHÏµÍ³±äÁ¿¾Í²»ÓÃÕâ¾äÁË
+"ctagsæ‰§è¡Œæ–‡ä»¶æ‰€åœ¨ä½ç½®æŠŠVIMç›®å½•åŠ å…¥PATHç³»ç»Ÿå˜é‡å°±ä¸ç”¨è¿™å¥äº†
 "let Tlist_Ctags_Cmd = 'd:\dev\vim\ctags.exe' 
 "let Tlist_Enable_Fold_Column = 1 " do not show folding tree
 let Tlist_Exit_OnlyWindow = 1 " exit vim when only the taglist window is present.
@@ -480,7 +480,7 @@ let Tlist_File_Fold_Auto_Close = 1 " fold taglists of unopened files.
 let Tlist_GainFocus_On_ToggleOpen = 1
 let Tlist_Inc_Winwidth = 0
 "let Tlist_Show_Menu = 1 "turn on the gui menu
-let Tlist_Sort_Type = "name" " Ö¸¶¨ÎªÄ¬ÈÏ°´×ÖÄ¸Ë³ĞòÅÅĞò£¬¿ÉÒÔÔÚtaglist´°¿Ú°´ s ÇĞ»»
+let Tlist_Sort_Type = "name" " æŒ‡å®šä¸ºé»˜è®¤æŒ‰å­—æ¯é¡ºåºæ’åºï¼Œå¯ä»¥åœ¨taglistçª—å£æŒ‰ s åˆ‡æ¢
 let Tlist_Use_Right_Window = 1 " split to the right side of the screen
 let Tlist_WinWidth = 35 " 
 let g:tlist_javascript_settings = 'javascript;f:function;c:class;o:object;m:method;s:string;a:array;n:constant'
@@ -516,18 +516,19 @@ let html_number_lines = 0
 map <leader>.r :MRU<cr>
 let MRU_Max_Entries=80
 "let MRU_Exclude_Files='^/tmp/.*\|^/var/tmp/.*'
-let MRU_Include_Files='\.css$\|\.html$\|\.htm$\|\.php\|\.js$\|\.vim$\|\.info$\|\.txt$\|vimrc$\|\.snippets'
+let MRU_Include_Files='\.css$\|\.html$\|\.htm$\|\.php$\|\.js$\|\.json$\|\.vim$\|\.info$\|\.txt$\|vimrc$\|\.snippets'
 
 let MRU_Window_Height=20
 let MRU_Filter_Not_Exists=1
 let MRU_Add_Menu=1
-let MRU_File=$VIM . '\_vim_mru_files'
+let MRU_File=$VIM . '/.vim_mru_files'
 
 " fencview.vim
 let g:fencview_autodetect = 1
 
 " acp.vim & SnipMate.vim
-let g:acp_behaviorSnipmateLength = 1
+"let g:acp_behaviorSnipmateLength = 1
+let g:acp_behaviorHtmlOmniLength = 1
 let g:acp_enableAtStartup = 1
 let g:acp_completeOption = '.,w,b,u,t,i,k'
 let g:acp_ignorecaseOption = 0
@@ -546,7 +547,7 @@ nmap <leader>fh :FufHelp<cr>
 autocmd FileType vim map <buffer> <leader><space> :w!<cr>:source %<cr>:w!<cr>
 "autocmd bufwritepost _vimrc source %
 
-" vimim.vim ÖĞÎÄÊäÈë·¨
+" vimim.vim ä¸­æ–‡è¾“å…¥æ³•
 let g:vimim_cloud_sogou=3
 
 " => Set OmniComplete
@@ -603,9 +604,15 @@ hi Pmenu guibg=#333333
 hi PmenuSel guibg=#555555 guifg=#ffffff
 
 " Syntax JavaScript
-"let b:javascript_fold=1  "Ò»µ©Ê¹ÓÃÓï·¨ÕÛµş£¬»áÒıÆğ¸ßÁÁÏÔÊ¾´íÎó... ¿ÉÄÜÓï·¨ÅäÖÃÓĞÎÊÌâ¡£ÔİÊ±²»ÄÜ½â¾ö¡£ »¹ÊÇÓÃÈË¹¤ÕÛµş°É£¡
+"let b:javascript_fold=1  "ä¸€æ—¦ä½¿ç”¨è¯­æ³•æŠ˜å ï¼Œä¼šå¼•èµ·é«˜äº®æ˜¾ç¤ºé”™è¯¯... å¯èƒ½è¯­æ³•é…ç½®æœ‰é—®é¢˜ã€‚æš‚æ—¶ä¸èƒ½è§£å†³ã€‚ è¿˜æ˜¯ç”¨äººå·¥æŠ˜å å§ï¼
 let javascript_enable_domhtmlcss=1
 
+" JSLint
+"set makeprg=cat\ %\ \\\|\ /my/path/to/js\ /my/path/to/mylintrun.js\ %
+"set errorformat=%f:%l:%c:%m
+
+
+au BufRead,BufNewFile *.json  set filetype=javascript
 "end }}}
 
 " => File Operation and encodings{{{
@@ -617,7 +624,8 @@ set noswapfile
 
 " Open Windows Explorer and Fouse current file.
 if has("win32") || has("win64")
-    nmap <F6> :!start explorer /e,/select, %:p<CR>
+    "éœ€è¦æŠŠæ–œæ ï¼ˆ/ï¼‰æ›¿æ¢æˆåæ–œæ ï¼ˆ\ï¼‰
+    nmap <F6> :!start explorer /e,/select, %:p:gs?/?\\?<CR>
     imap <F6> <C-o><F6>
     "view file in Chrome browser
     map <silent> <F12> :call Chromeit()<cr>
@@ -638,7 +646,7 @@ function! RestoreFileEncodings()
     unlet b:my_fileencodings_bak
 endfunction
 
-set fileencoding=chinese
+set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,gb18030,gbk,big5,euc-jp,euc-kr,latin1
 set formatoptions+=mM
 set nobomb " Don' use Unicode
@@ -667,8 +675,8 @@ else
 endif
 
 " Convert fileencoding
-nmap <leader>gbk :set fenc=gbk<cr>,w
-nmap <leader>utf :set fenc=utf-8<cr>,w
+nmap <leader>eg :set fenc=gbk<cr>,w
+nmap <leader>ee :set fenc=utf-8<cr>,w
 
 " end }}}
 
@@ -724,4 +732,4 @@ nmap <leader>.cdos :cd d:\projects\opensearch\<cr>
 
 "end }}}
 
-"²âÊÔÖĞÎÄ
+"æµ‹è¯•ä¸­æ–‡

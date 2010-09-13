@@ -343,7 +343,9 @@ function! s:MRU_AddFile(acmd_bufnr)
     if g:MRU_Include_Files != ''
         " If MRU_Include_Files is set, include only files matching the
         " specified pattern
-        if fname !~# g:MRU_Include_Files
+        " if fname !~# g:MRU_Include_Files
+        " Window下文件名不区分大小写！
+        if fname !~? g:MRU_Include_Files
             return
         endif
     endif
@@ -351,7 +353,8 @@ function! s:MRU_AddFile(acmd_bufnr)
     if g:MRU_Exclude_Files != ''
         " Do not add files matching the pattern specified in the
         " MRU_Exclude_Files to the MRU list
-        if fname =~# g:MRU_Exclude_Files
+        "if fname =~# g:MRU_Exclude_Files
+        if fname =~? g:MRU_Exclude_Files
             return
         endif
     endif

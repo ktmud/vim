@@ -141,6 +141,8 @@ endif
 call s:IndAdder('a', 'abbr', 'acronym', 'address', 'b', 'bdo', 'big')
 call s:IndAdder('blockquote', 'button', 'caption', 'center', 'cite', 'code')
 call s:IndAdder('colgroup', 'del', 'dfn', 'dir', 'div', 'dl', 'em')
+" for HTML5 by ktmud
+call s:IndAdder('article', 'section', 'header', 'footer', 'aside')
 call s:IndAdder('fieldset', 'font', 'form', 'frameset', 'h1', 'h2', 'h3')
 call s:IndAdder('h4', 'h5', 'h6')
 " call s:IndAdder('html')
