@@ -10,11 +10,11 @@ set nocompatible
 
 " Basic {{{
 if has("win32")
-    let $VIMFILES = $VIM.'/vimfiles'
-    let $V = $VIM.'/_vimrc'
+  let $VIMFILES = $VIM.'/vimfiles'
+  let $V = $VIM.'/_vimrc'
 else
-    let $VIMFILES = $HOME.'/.vim'
-    let $V = $HOME.'/.vimrc'
+  let $VIMFILES = $HOME.'/.vim'
+  let $V = $HOME.'/.vimrc'
 endif
 
 " basic end }}}
@@ -72,11 +72,11 @@ set mat=2
 set hlsearch
 nmap <silent> <F2> <esc>:call ToggleHighLightSearch()<cr>
 func! ToggleHighLightSearch()
-    if &hls
-        set nohls
-    else
-        set hls
-    endif
+  if &hls
+    set nohls
+  else
+    set hls
+  endif
 endfunction
 
 " Have the mouse enabled all the time:
@@ -85,6 +85,12 @@ set mouse=a
 set showcmd
 " Sets how many lines of history VIM har to remember
 set history=800
+
+" 重启后撤销历史可用 persistent undo 
+set undofile
+set undodir=$VIMFILES/\_undodir
+set undolevels=1000 "maximum number of changes that can be undone
+
 " Always switch to the current file directory
 set autochdir
 "Set the terminal title
@@ -103,8 +109,8 @@ nmap <leader>fi :set fdm=indent<cr>
 nmap <leader>fm :set fdm=marker<cr>
 nmap <leader>fs :set fdm=syntax<cr>
 " Audosave and autoload views, include foldings
-autocmd BufWinLeave {*.css,*.html,*.htm,*.php,*.js,*.json,*.vim,*.info,*.txt,*vimrc,*.snippets} mkview 
-autocmd BufRead {*.css,*.html,*.htm,*.php,*.js,*.json,*.vim,*.info,*.txt,*vimrc,*.snippets} silent loadview
+autocmd BufWinLeave {*.wiki,*.css,*.html,*.htm,*.php,*.js,*.json,*.vim,*.info,*.txt,*vimrc,*.snippets} mkview 
+autocmd BufRead {*.wiki,*.css,*.html,*.htm,*.php,*.js,*.json,*.vim,*.info,*.txt,*vimrc,*.snippets} silent loadview
 
 " Text options
 set expandtab
@@ -240,11 +246,11 @@ map <leader>$ :syntax sync fromstart<cr>
 " Format all and then pos the cursor back
 nmap <silent> <leader>= :let cursorPos=getpos(".")<cr>gg=G:call setpos('.', cursorPos)<cr>:unlet cursorPos<cr>
 " Format a compressed css file
-map <leader>.fc :%s/;\s*\([a-z*_-}]\)/;\r\1/g<cr>:%s/\(\w\)\s*{\([^\r]\)/\1\s{\r\2/g<cr>:%s/:\(\w\)/:\ \1/g<cr>:%s/}\(\w\\|#\\|\.\)/}\r\1/g<cr>,=
+map <leader>css :%s/;\s*\([a-z*_-}]\)/;\r\1/g<cr>:%s/\(\w\)\s*{\([^\r]\)/\1\s{\r\2/g<cr>:%s/:\(\w\)/:\ \1/g<cr>:%s/}\(\w\\|#\\|\.\)/}\r\1/g<cr>,=
 
 function! FormartCSS()
-    let cursorPos = getPos(".")
-    substitute(%)
+  let cursorPos = getPos(".")
+  substitute(%)
 endfunction
 
 " Quit readonly files (like help.cnx) quickly
@@ -270,22 +276,22 @@ nmap <S-Delete> :bd<cr>
 command! Bclose call <SID>BufcloseCloseIt()
 
 function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
+  let l:currentBufNum = bufnr("%")
+  let l:alternateBufNum = bufnr("#")
 
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
+  if buflisted(l:alternateBufNum)
+    buffer #
+  else
+    bnext
+  endif
 
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
+  if bufnr("%") == l:currentBufNum
+    new
+  endif
 
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
+  if buflisted(l:currentBufNum)
+    execute("bdelete! ".l:currentBufNum)
+  endif
 endfunction
 
 " Tab key to indent
@@ -316,21 +322,21 @@ imap <C-Tab> <C-O>gt
 
 
 function! TabCloseCheck()
-    if tabpagenr('$') == 1
-        let choice = confirm("Close the last tab?", "&Yes\n&No", 1, "Warning")
-        if choice == 1
-            exe 'confirm q'
-        else
-            return
-        endif
+  if tabpagenr('$') == 1
+    let choice = confirm("Close the last tab?", "&Yes\n&No", 1, "Warning")
+    if choice == 1
+      exe 'confirm q'
     else
-        exe 'confirm q'
+      return
     endif
+  else
+    exe 'confirm q'
+  endif
 endfunction
 
 try
-    set switchbuf=usetab
-    set showtabline=2  "Always show the tabline.
+  set switchbuf=usetab
+  set showtabline=2  "Always show the tabline.
 catch
 endtry
 
@@ -350,8 +356,8 @@ map <leader>t4 :set shiftwidth=4<cr>
 set laststatus=2
 
 function! CurDir()
-    let curdir = substitute(getcwd(), $HOME, "~/", "g")
-    return curdir
+  let curdir = substitute(getcwd(), $HOME, "~/", "g")
+  return curdir
 endfunction
 
 "Format the statusline
@@ -363,17 +369,17 @@ set statusline=%#Pmenu#%M%*\%F\ %r%h%w[%Y,%{&ff},%{(&fenc==\"\")?&enc:&fenc}%{(&
 vnoremap <BS> <Delete>i
 
 function! VisualSearch(direction) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-    if a:direction == 'b'
-        execute "normal ?" . l:pattern . "^M"
-    else
-        execute "normal /" . l:pattern . "^M"
-    endif
-    let @/ = l:pattern
-    let @" = l:saved_reg
+  let l:saved_reg = @"
+  execute "normal! vgvy"
+  let l:pattern = escape(@", '\\/.*$^~[]')
+  let l:pattern = substitute(l:pattern, "\n$", "", "")
+  if a:direction == 'b'
+    execute "normal ?" . l:pattern . "^M"
+  else
+    execute "normal /" . l:pattern . "^M"
+  endif
+  let @/ = l:pattern
+  let @" = l:saved_reg
 endfunction
 
 " Basically you press * or # to search for the current selection !! Really useful
@@ -403,41 +409,41 @@ vmap <leader>s #
 "inoremap < <c-r>=OpenPair('<')<CR>
 "inoremap > <c-r>=ClosePair('>')<CR>
 function! OpenPair(char)
-    let PAIRs = {
-                \ '{' : '}',
-                \ '[' : ']',
-                \ '(' : ')',
-                \ '<' : '>'
-                \}
-    let ol = len(split(getline('.'), a:char, 1))-1
-    let cl = len(split(getline('.'), PAIRs[a:char], 1))-1
-    "if ol==cl
-    return a:char . PAIRs[a:char] . "\<Left>"
-    "else
-    return a:char
-    "endif
+  let PAIRs = {
+        \ '{' : '}',
+        \ '[' : ']',
+        \ '(' : ')',
+        \ '<' : '>'
+        \}
+  let ol = len(split(getline('.'), a:char, 1))-1
+  let cl = len(split(getline('.'), PAIRs[a:char], 1))-1
+  "if ol==cl
+  return a:char . PAIRs[a:char] . "\<Left>"
+  "else
+  return a:char
+  "endif
 endfunction
 function! ClosePair(char)
-    if getline('.')[col('.') - 1] == a:char
-        return "\<Right>"
-    else
-        return a:char
-    endif
+  if getline('.')[col('.') - 1] == a:char
+    return "\<Right>"
+  else
+    return a:char
+  endif
 endf
 
 "inoremap ' <c-r>=CompleteQuote("'")<CR>
 "inoremap " <c-r>=CompleteQuote('"')<CR>
 "autocmd FileType vim inoremap <buffer> " "
 function! CompleteQuote(quote)
-    let ql = len(split(getline('.'), a:quote, 1))-1
-    " a:quote length is odd.
-    if (ql%2)==1
-        return a:quote
-    elseif getline('.')[col('.') - 1] == a:quote
-        return "\<Right>"
-    else
-        return a:quote . a:quote . "\<Left>"
-    endif
+  let ql = len(split(getline('.'), a:quote, 1))-1
+  " a:quote length is odd.
+  if (ql%2)==1
+    return a:quote
+  elseif getline('.')[col('.') - 1] == a:quote
+    return "\<Right>"
+  else
+    return a:quote . a:quote . "\<Left>"
+  endif
 endfunction
 
 vnoremap #( <esc>`>a)<esc>`<i(<esc>
@@ -516,7 +522,7 @@ let html_number_lines = 0
 map <leader>.r :MRU<cr>
 let MRU_Max_Entries=80
 "let MRU_Exclude_Files='^/tmp/.*\|^/var/tmp/.*'
-let MRU_Include_Files='\.css$\|\.html$\|\.htm$\|\.php$\|\.js$\|\.json$\|\.vim$\|\.info$\|\.txt$\|vimrc$\|\.snippets'
+let MRU_Include_Files='\.wiki\|\.css$\|\.html$\|\.htm$\|\.php$\|\.js$\|\.json$\|\.vim$\|\.info$\|\.txt$\|vimrc$\|\.snippets'
 
 let MRU_Window_Height=20
 let MRU_Filter_Not_Exists=1
@@ -564,6 +570,25 @@ autocmd FileType php setlocal dict+=$VIMFILES\dict\php_functions.txt
 autocmd FileType c setlocal omnifunc=ccomplete#Complete
 imap <S-Space> <C-X><C-O>
 
+" vimwiki
+"     \ 'auto_export': 1,
+let g:vimwiki_list = [{'path': 'E:/My Dropbox/vimwiki/', 
+      \ 'html_header': 'E:/My Dropbox/Public/vimwiki_template/header.htm',
+      \ 'html_footer': 'E:/My Dropbox/Public/vimwiki_template/footer.htm',
+      \ 'diary_link_count': 5},
+      \{'path': 'Z:\demo\qiuchi\wiki'}]
+let g:vimwiki_hl_cb_checked = 1
+let g:vimwiki_menu = ''
+"let g:vimwiki_folding = 1
+let g:vimwiki_CJK_length = 1
+let g:vimwiki_valid_html_tags='b,i,s,u,sub,sup,kbd,del,br,hr,div,code,h1'
+
+map <S-F4> :VimwikiAll2HTML<cr>
+map <F4> :Vimwiki2HTML<cr>
+
+" calendar
+map <F8> :Calendar<cr>
+
 " plugin end }}}
 
 " => Colors & Fonts & Syntax {{{
@@ -571,32 +596,32 @@ imap <S-Space> <C-X><C-O>
 syntax enable
 
 if has("gui_running")
-    colorscheme molokai
-    " Highlight cursor position
-    "set cursorline
-    "set cursorcolumn
-    " Toggle Menu and Toolbar and switch fullscreen mode
-    "set guioptions-=B " Hide bottom scrollbar
-    "set guioptions-=R " Hide right scrollbar
-    "set guioptions-=r
-    "set guioptions-=l " Hide left scrollbar
-    set guioptions-=L
-    set guioptions-=m " Hide Menu
-    set guioptions-=T " Hide Toolbar
-    map <silent> <F11> :if &guioptions =~# 'm' <Bar> set guioptions-=m <bar> else <Bar> set guioptions+=m <Bar> endif<cr>
-    "map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
-    " Auto Maximize when vim starts.
-    if has("win32")
-        exec 'set guifont='.iconv('Courier\ New', &enc, 'gbk').':h12:cANSI'
-        exec 'set guifontwide='.iconv('Yahei\ Mono', &enc, 'gbk').':h12'
-        au GUIEnter * simalt ~x
-    elseif has("unix")
-        au GUIEnter * winpos 0 0
-        "set lines=999 columns=9999
-    end
+  colorscheme molokai
+  " Highlight cursor position
+  "set cursorline
+  "set cursorcolumn
+  " Toggle Menu and Toolbar and switch fullscreen mode
+  "set guioptions-=B " Hide bottom scrollbar
+  "set guioptions-=R " Hide right scrollbar
+  "set guioptions-=r
+  "set guioptions-=l " Hide left scrollbar
+  set guioptions-=L
+  set guioptions-=m " Hide Menu
+  set guioptions-=T " Hide Toolbar
+  map <silent> <F11> :if &guioptions =~# 'm' <Bar> set guioptions-=m <bar> else <Bar> set guioptions+=m <Bar> endif<cr>
+  "map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+  " Auto Maximize when vim starts.
+  if has("win32")
+    exec 'set guifont='.iconv('Courier\ New', &enc, 'gbk').':h12:cANSI'
+    exec 'set guifontwide='.iconv('Yahei\ Mono', &enc, 'gbk').':h12'
+    au GUIEnter * simalt ~x
+  elseif has("unix")
+    au GUIEnter * winpos 0 0
+    "set lines=999 columns=9999
+  end
 else
-    "colorscheme zellner
-    colorscheme astronaut
+  "colorscheme zellner
+  colorscheme astronaut
 endif
 
 " Omni menu colors
@@ -622,28 +647,29 @@ set nobackup
 set nowb
 set noswapfile
 
+
 " Open Windows Explorer and Fouse current file.
 if has("win32") || has("win64")
-    "需要把斜杠（/）替换成反斜杠（\）
-    nmap <F6> :!start explorer /e,/select, %:p:gs?/?\\?<CR>
-    imap <F6> <C-o><F6>
-    "view file in Chrome browser
-    map <silent> <F12> :call Chromeit()<cr>
-    au FileType javascript map <buffer> <f12> :call g:Jsbeautify()<cr>
+  "需要把斜杠（/）替换成反斜杠（\）
+  nmap <F6> :!start explorer /e,/select, "%:p:gs?/?\\?"<CR>
+  imap <F6> <C-o><F6>
+  "view file in Chrome browser
+  map <silent> <F12> :call Chromeit()<cr>
+  au FileType javascript map <buffer> <f12> :call g:Jsbeautify()<cr>
 endif
 
 function! Chromeit()
-    exec '!start "'.$HOME.'\AppData\Local\Google\Chrome\Application\chrome.exe" --enable-extension-timeline-api %:p"'
+  exec '!start "'.$HOME.'\AppData\Local\Google\Chrome\Application\chrome.exe" --enable-extension-timeline-api "%:p"'
 endfunction
 
 function! SetFileEncodings(encodings)
-    let b:my_fileencodings_bak=&fileencodings
-    let &fileencodings=a:encodings
+  let b:my_fileencodings_bak=&fileencodings
+  let &fileencodings=a:encodings
 endfunction
 
 function! RestoreFileEncodings()
-    let &fileencodings=b:my_fileencodings_bak
-    unlet b:my_fileencodings_bak
+  let &fileencodings=b:my_fileencodings_bak
+  unlet b:my_fileencodings_bak
 endfunction
 
 set fileencoding=utf-8
@@ -652,26 +678,26 @@ set formatoptions+=mM
 set nobomb " Don' use Unicode
 
 if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
-    set ambiwidth=double
+  set ambiwidth=double
 endif
 
 
 if has("gui_running")
-    set encoding=utf-8
-    set langmenu=zh_CN
-    "let $LANG='chinese'
-    "language messages en_US.utf-8
-    language messages zh_CN.utf-8
-    "let &termencoding=&encoding
-    source $VIMRUNTIME\delmenu.vim
-    source $VIMRUNTIME\menu.vim
-    if version >= 603
-        set helplang=cn
-    endif
+  set encoding=utf-8
+  set langmenu=zh_CN
+  "let $LANG='chinese'
+  "language messages en_US.utf-8
+  language messages zh_CN.utf-8
+  "let &termencoding=&encoding
+  source $VIMRUNTIME\delmenu.vim
+  source $VIMRUNTIME\menu.vim
+  if version >= 603
+    set helplang=cn
+  endif
 else
-    "set fileencoding=utf-8
-    lang mes zh_CN
-    set encoding=chinese
+  "set fileencoding=utf-8
+  lang mes zh_CN
+  set encoding=chinese
 endif
 
 " Convert fileencoding
@@ -683,28 +709,28 @@ nmap <leader>ee :set fenc=utf-8<cr>,w
 " => Misc  {{{
 
 function! GnuIndent()
-    setlocal cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1
-    setlocal shiftwidth=2
-    setlocal tabstop=8
+  setlocal cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1
+  setlocal shiftwidth=2
+  setlocal tabstop=8
 endfunction
 
 function! UpdateLastChangeTime()
-    let last_change_anchor='\(" Last Change:\s\+\)\d\{4}-\d\{2}-\d\{2} \d\{2}:\d\{2}:\d\{2}'
-    let last_change_line=search('\%^\_.\{-}\(^\zs' . last_change_anchor . '\)', 'n')
-    if last_change_line != 0
-        let last_change_time=strftime('%Y-%m-%d %H:%M:%S', localtime())
-        let last_change_text=substitute(getline(last_change_line), '^' . last_change_anchor, '\1', '') . last_change_time
-        call setline(last_change_line, last_change_text)
-    endif
+  let last_change_anchor='\(" Last Change:\s\+\)\d\{4}-\d\{2}-\d\{2} \d\{2}:\d\{2}:\d\{2}'
+  let last_change_line=search('\%^\_.\{-}\(^\zs' . last_change_anchor . '\)', 'n')
+  if last_change_line != 0
+    let last_change_time=strftime('%Y-%m-%d %H:%M:%S', localtime())
+    let last_change_text=substitute(getline(last_change_line), '^' . last_change_anchor, '\1', '') . last_change_time
+    call setline(last_change_line, last_change_text)
+  endif
 endfunction
 
 function! RemoveTrailingSpace()
-    if $VIM_HATE_SPACE_ERRORS != '0' &&
-                \(&filetype == 'c' || &filetype == 'cpp' || &filetype == 'vim')
-        normal! m`
-        silent! :%s/\s\+$//e
-        normal! ``
-    endif
+  if $VIM_HATE_SPACE_ERRORS != '0' &&
+        \(&filetype == 'c' || &filetype == 'cpp' || &filetype == 'vim')
+    normal! m`
+    silent! :%s/\s\+$//e
+    normal! ``
+  endif
 endfunction
 
 " Let TOhtml output <PRE> and style sheet
@@ -718,8 +744,8 @@ au FuncUndefined Syn* exec 'runtime autoload/' . expand('<afile>') . '.vim'
 
 " Function to insert the current date
 function! InsertCurrentDate()
-    let curr_date=strftime('%Y-%m-%d %X', localtime())
-    silent! exec 'normal! gi' .  curr_date . "\<ESC>"
+  let curr_date=strftime('%Y-%m-%d %X', localtime())
+  silent! exec 'normal! gi' .  curr_date . "\<ESC>"
 endfunction
 
 " Key mapping to insert the current date

@@ -1,5 +1,7 @@
 丘迟（@ktmud http://twitter.com/ktmud jyyjcc#gmail.com）的 VIM配置文件及插件
 
+注意：请赶快升级你的 vim 到 7.3 
+
 发扬 不折腾不舒夫斯基 精神，把VIM打造成最顺手的编辑器！
 
 只包含必要的配置文件和插件，以及修改过的部分自带文件。
