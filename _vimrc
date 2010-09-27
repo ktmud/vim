@@ -573,18 +573,23 @@ imap <S-Space> <C-X><C-O>
 " vimwiki
 "     \ 'auto_export': 1,
 let g:vimwiki_list = [{'path': 'E:/My Dropbox/vimwiki/', 
-      \ 'html_header': 'E:/My Dropbox/Public/vimwiki_template/header.htm',
-      \ 'html_footer': 'E:/My Dropbox/Public/vimwiki_template/footer.htm',
+      \ 'html_header': 'E:/My Dropbox/vimwiki_template/header.htm',
+      \ 'html_footer': 'E:/My Dropbox/vimwiki_template/footer.htm',
       \ 'diary_link_count': 5},
       \{'path': 'Z:\demo\qiuchi\wiki'}]
+" 对中文用户来说，我们并不怎么需要驼峰英文成为维基词条
+let g:vimwiki_camel_case = 0
 let g:vimwiki_hl_cb_checked = 1
 let g:vimwiki_menu = ''
 "let g:vimwiki_folding = 1
 let g:vimwiki_CJK_length = 1
 let g:vimwiki_valid_html_tags='b,i,s,u,sub,sup,kbd,del,br,hr,div,code,h1'
 
-map <S-F4> :VimwikiAll2HTML<cr>
 map <F4> :Vimwiki2HTML<cr>
+map <S-F4> :VimwikiAll2HTML<cr>
+map <leader>wg :exec 'silent !cmd.exe /k "cd "'.VimwikiGet('path').'" & sync"'<cr>
+map <leader>wh :exec 'silent !cmd.exe /k "cd "'.VimwikiGet('path_html').'" & sync"'<cr>
+map <C-F4> <S-F4>,w.
 
 " calendar
 map <F8> :Calendar<cr>
