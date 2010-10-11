@@ -1,6 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Owner: Ktmud <i@yjc.me>
-" Last Change: 2010-07-30 21:22:05
+" Last Change: 2010-10-09 19:37:05
 "
 " set runtimepath=~/vim,$VIMRUNTIME
 " source ~/vim/vimrc
@@ -86,7 +86,7 @@ set showcmd
 " Sets how many lines of history VIM har to remember
 set history=800
 
-" é‡å¯åæ’¤é”€å†å²å¯ç”¨ persistent undo 
+" ÖØÆôºó³·ÏúÀúÊ·¿ÉÓÃ persistent undo 
 set undofile
 set undodir=$VIMFILES/\_undodir
 set undolevels=1000 "maximum number of changes that can be undone
@@ -110,7 +110,11 @@ nmap <leader>fm :set fdm=marker<cr>
 nmap <leader>fs :set fdm=syntax<cr>
 " Audosave and autoload views, include foldings
 autocmd BufWinLeave {*.wiki,*.css,*.html,*.htm,*.php,*.js,*.json,*.vim,*.info,*.txt,*vimrc,*.snippets} mkview 
-autocmd BufRead {*.wiki,*.css,*.html,*.htm,*.php,*.js,*.json,*.vim,*.info,*.txt,*vimrc,*.snippets} silent loadview
+autocmd BufRead     {*.wiki,*.css,*.html,*.htm,*.php,*.js,*.json,*.vim,*.info,*.txt,*vimrc,*.snippets} silent loadview
+
+" Quit readonly files (like help.cnx) quickly
+au BufRead *       exe 'if &buftype != "" | nmap <buffer> q :close<cr> | endif'
+au BufRead */doc/* set buftype=help
 
 " Text options
 set expandtab
@@ -132,27 +136,35 @@ set shellslash
 " => Shortcuts Mapping {{{
 
 set timeout timeoutlen=600 ttimeoutlen=50
-
 " Adapt vim to common habits {{{
 
 " Select All
-nnoremap <leader>a ggVG
-nnoremap <C-a> ggVG
-inoremap <C-a> <Esc>ggVG
-vnoremap <Esc> <Esc><C-o><>
+nnoremap <leader>a :call RememberCursor()<cr>ggVG
+nnoremap <C-a> :call RememberCursor()<cr>ggVG
+inoremap <C-a> <Esc>:call RememberCursor()<cr>ggVG
+vnoremap <Esc> <Esc><cr>
+
+function! RememberCursor()
+    let cursorPos=getpos(".")
+endfunction
+
+function! ResetCursor()
+    setpos('.', cursorPos)
+endfunction
+
 
 " Clipboard
 vmap <leader>.c "+y
 vmap <leader>.x "+x
 vmap <C-c> "+y
 vmap <C-x> "+x
-map <leader>.v "+gp
-inoremap <leader>.v <C-O>"+gP
+"map <leader>.v "+gp
+"inoremap <leader>.v <C-O>"+gP
 nnoremap <C-v> "+p
-"ä½¿ç”¨lmapå°±å¯ä»¥åœ¨å‘½ä»¤è¡Œæ¨¡å¼ä¹Ÿç²˜è´´
+"Ê¹ÓÃlmap¾Í¿ÉÒÔÔÚÃüÁîĞĞÄ£Ê½Ò²Õ³Ìù
 inoremap <C-v> <C-r>+
 vnoremap <C-v> <Delete>i<C-r>+
-" æˆ‘é ï¼ŒåŸæ¥ç”¨<C-R>å°±èƒ½è§£å†³é—®é¢˜ï¼
+" ÎÒ¿¿£¬Ô­À´ÓÃ<C-R>¾ÍÄÜ½â¾öÎÊÌâ£¡
 
 " Set clipboard+=unnamed
 
@@ -161,7 +173,6 @@ inoremap <C-z> <C-o>u
 " Redo
 inoremap <C-y> <C-o><C-r>
 nnoremap t <C-r>
-
 
 "end }}}
 
@@ -191,16 +202,10 @@ map Q :x<cr>
 nmap :X :x
 nmap :W :w
 nmap :Q :q
-" Bash like
-imap <C-A> <Home>
-"imap <C-E> <End>
-imap <C-K> <Esc>d$i
-imap <C-B> <Left>
-imap <C-F> <Right>
 
 " Command-line
 cnoremap <C-A> <Home>
-"cnoremap <C-E> <End>
+cnoremap <C-E> <End>
 cnoremap <C-B> <Left>
 cnoremap <C-F> <Right>
 
@@ -209,10 +214,10 @@ noremap <C-J> gj
 noremap <C-K> gk
 
 " Usefull when insert a new indent line
-imap `j <cr><C-O>O
+imap <C-J> <cr><C-O>O
 " Remove tag content | see :help object-select
 nmap `i cit
-imap `i <C-O>cit
+imap <C-i> <C-O>cit
 
 " Move lines (Eclipse like)
 nmap <C-Down> :<C-u>move .+1<cr>
@@ -223,13 +228,13 @@ vmap <C-Down> :move '>+1<cr>gv
 vmap <C-Up> :move '<-2<cr>gv
 
 " Use shell with ctrl-z
-"map <C-Z> :shell<cr>
+map <C-Z> :shell<cr>
 
-" Remove indentation on empty lines ä»¥åŠè¡Œå°¾ç©ºç™½
+" Remove indentation on empty lines ÒÔ¼°ĞĞÎ²¿Õ°×
 map <leader>ri :%s/\s*$//g<cr>:noh<cr>
 " Paste toggle - when pasting something in, don't indent.
-nnoremap <F3> :set invpaste paste?<CR>
-set pastetoggle=<F3>
+nnoremap <F5> :set invpaste paste?<CR>
+set pastetoggle=<F5>
 set showmode
 " SVN Diff
 map <F8> :new<cr>:read !svn diff<cr>:set syntax=diff buftype=nofile<cr>gg
@@ -242,20 +247,15 @@ map <leader>ty :set ft=python<cr>
 map <leader>tp :set ft=php<cr>
 map <leader>$ :syntax sync fromstart<cr>
 
-
-" Format all and then pos the cursor back
+" Format all then pos the cursor back
 nmap <silent> <leader>= :let cursorPos=getpos(".")<cr>gg=G:call setpos('.', cursorPos)<cr>:unlet cursorPos<cr>
 " Format a compressed css file
-map <leader>css :%s/;\s*\([a-z*_-}]\)/;\r\1/g<cr>:%s/\(\w\)\s*{\([^\r]\)/\1\s{\r\2/g<cr>:%s/:\(\w\)/:\ \1/g<cr>:%s/}\(\w\\|#\\|\.\)/}\r\1/g<cr>,=
+map <leader>css :%s/;\s*\([a-z*_-}]\)/;\r\1/g<cr>:%s/\(\w\)\s*{\([^\r]\)/\1\ {\r\2/g<cr>:%s/:\(\w\)/:\ \1/g<cr>:%s/}\(\w\\|#\\|\.\)/}\r\1/g<cr>,=
 
 function! FormartCSS()
   let cursorPos = getPos(".")
-  substitute(%)
 endfunction
 
-" Quit readonly files (like help.cnx) quickly
-au BufRead */doc/* nnoremap <buffer> <silent> q :close<cr>
-au BufRead */doc/* set buftype=help
 
 
 " === operator-pending mode ==
@@ -318,6 +318,7 @@ map <leader>.e :tabedit
 map <leader>.q :tabnew<cr>
 map <silent> <leader>.w :call TabCloseCheck()<cr>
 nmap <C-Tab> gt
+nmap <S-C-Tab> gT
 imap <C-Tab> <C-O>gt
 
 
@@ -388,7 +389,7 @@ vnoremap <silent> # :call VisualSearch('b')<cr>
 
 " Replace
 nmap <leader>s :%s//
-imap <leader>s :%s//
+"imap <leader>s :%s//
 vmap <leader>s #
 
 " visual end }}}
@@ -432,7 +433,8 @@ function! ClosePair(char)
 endf
 
 "inoremap ' <c-r>=CompleteQuote("'")<CR>
-"inoremap " <c-r>=CompleteQuote('"')<CR>
+"inoremap 
+" <c-r>=CompleteQuote('"')<CR>
 "autocmd FileType vim inoremap <buffer> " "
 function! CompleteQuote(quote)
   let ql = len(split(getline('.'), a:quote, 1))-1
@@ -478,7 +480,7 @@ map <F10> :TlistToggle<cr>
 "let Tlist_Auto_Open=1 "let the tag list open automagically
 "let Tlist_Close_OnSelect = 1
 let Tlist_Compact_Format = 1 " show small menu
-"ctagsæ‰§è¡Œæ–‡ä»¶æ‰€åœ¨ä½ç½®æŠŠVIMç›®å½•åŠ å…¥PATHç³»ç»Ÿå˜é‡å°±ä¸ç”¨è¿™å¥äº†
+"ctagsÖ´ĞĞÎÄ¼şËùÔÚÎ»ÖÃ°ÑVIMÄ¿Â¼¼ÓÈëPATHÏµÍ³±äÁ¿¾Í²»ÓÃÕâ¾äÁË
 "let Tlist_Ctags_Cmd = 'd:\dev\vim\ctags.exe' 
 "let Tlist_Enable_Fold_Column = 1 " do not show folding tree
 let Tlist_Exit_OnlyWindow = 1 " exit vim when only the taglist window is present.
@@ -486,7 +488,7 @@ let Tlist_File_Fold_Auto_Close = 1 " fold taglists of unopened files.
 let Tlist_GainFocus_On_ToggleOpen = 1
 let Tlist_Inc_Winwidth = 0
 "let Tlist_Show_Menu = 1 "turn on the gui menu
-let Tlist_Sort_Type = "name" " æŒ‡å®šä¸ºé»˜è®¤æŒ‰å­—æ¯é¡ºåºæ’åºï¼Œå¯ä»¥åœ¨taglistçª—å£æŒ‰ s åˆ‡æ¢
+let Tlist_Sort_Type = "name" " Ö¸¶¨ÎªÄ¬ÈÏ°´×ÖÄ¸Ë³ĞòÅÅĞò£¬¿ÉÒÔÔÚtaglist´°¿Ú°´ s ÇĞ»»
 let Tlist_Use_Right_Window = 1 " split to the right side of the screen
 let Tlist_WinWidth = 35 " 
 let g:tlist_javascript_settings = 'javascript;f:function;c:class;o:object;m:method;s:string;a:array;n:constant'
@@ -502,7 +504,7 @@ let g:logFile = 'build.log'
 
 " NERD_tree.vim
 map <F9> :NERDTreeToggle<cr>
-let NERDTreeIgnore=['\.pyc$','\.svn$','\.tmp$','\.bak','\~$','\.swp$']
+let NERDTreeIgnore=['\.pyc$', '\.svn$', '\.tmp$', '\.bak', '\~$', '\.swp$', 'Thumbs\.db']
 let NERDTreeQuitOnOpen=1
 
 " html.vim
@@ -553,7 +555,7 @@ nmap <leader>fh :FufHelp<cr>
 autocmd FileType vim map <buffer> <leader><space> :w!<cr>:source %<cr>:w!<cr>
 "autocmd bufwritepost _vimrc source %
 
-" vimim.vim ä¸­æ–‡è¾“å…¥æ³•
+" vimim.vim ÖĞÎÄÊäÈë·¨
 let g:vimim_cloud_sogou=3
 
 " => Set OmniComplete
@@ -577,7 +579,7 @@ let g:vimwiki_list = [{'path': 'E:/My Dropbox/vimwiki/',
       \ 'html_footer': 'E:/My Dropbox/vimwiki_template/footer.htm',
       \ 'diary_link_count': 5},
       \{'path': 'Z:\demo\qiuchi\wiki'}]
-" å¯¹ä¸­æ–‡ç”¨æˆ·æ¥è¯´ï¼Œæˆ‘ä»¬å¹¶ä¸æ€ä¹ˆéœ€è¦é©¼å³°è‹±æ–‡æˆä¸ºç»´åŸºè¯æ¡
+" ¶ÔÖĞÎÄÓÃ»§À´Ëµ£¬ÎÒÃÇ²¢²»ÔõÃ´ĞèÒªÍÕ·åÓ¢ÎÄ³ÉÎªÎ¬»ù´ÊÌõ
 let g:vimwiki_camel_case = 0
 let g:vimwiki_hl_cb_checked = 1
 let g:vimwiki_menu = ''
@@ -634,10 +636,16 @@ hi Pmenu guibg=#333333
 hi PmenuSel guibg=#555555 guifg=#ffffff
 
 " Syntax JavaScript
-"let b:javascript_fold=1  "ä¸€æ—¦ä½¿ç”¨è¯­æ³•æŠ˜å ï¼Œä¼šå¼•èµ·é«˜äº®æ˜¾ç¤ºé”™è¯¯... å¯èƒ½è¯­æ³•é…ç½®æœ‰é—®é¢˜ã€‚æš‚æ—¶ä¸èƒ½è§£å†³ã€‚ è¿˜æ˜¯ç”¨äººå·¥æŠ˜å å§ï¼
+"let b:javascript_fold=1  "Ò»µ©Ê¹ÓÃÓï·¨ÕÛµş£¬»áÒıÆğ¸ßÁÁÏÔÊ¾´íÎó... ¿ÉÄÜÓï·¨ÅäÖÃÓĞÎÊÌâ¡£ÔİÊ±²»ÄÜ½â¾ö¡£ »¹ÊÇÓÃÈË¹¤ÕÛµş°É£¡
 let javascript_enable_domhtmlcss=1
 
 " JSLint
+"let jslint_command = $VIM . '\vimfiles\etc\jsl-0.3.0\jsl.exe'
+"map <leader>jsl :call JavascriptLint()<cr>
+"map <leader>gjsl :call GJSLint()<cr>
+"map <C-n>  :cn<cr>
+"map <S-C-n>  :cp<cr>
+
 "set makeprg=cat\ %\ \\\|\ /my/path/to/js\ /my/path/to/mylintrun.js\ %
 "set errorformat=%f:%l:%c:%m
 
@@ -655,7 +663,7 @@ set noswapfile
 
 " Open Windows Explorer and Fouse current file.
 if has("win32") || has("win64")
-  "éœ€è¦æŠŠæ–œæ ï¼ˆ/ï¼‰æ›¿æ¢æˆåæ–œæ ï¼ˆ\ï¼‰
+  "ĞèÒª°ÑĞ±¸Ü£¨/£©Ìæ»»³É·´Ğ±¸Ü£¨\£©
   nmap <F6> :!start explorer /e,/select, "%:p:gs?/?\\?"<CR>
   imap <F6> <C-o><F6>
   "view file in Chrome browser
@@ -677,7 +685,8 @@ function! RestoreFileEncodings()
   unlet b:my_fileencodings_bak
 endfunction
 
-set fileencoding=utf-8
+set fileencoding=gbk
+"set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,gb18030,gbk,big5,euc-jp,euc-kr,latin1
 set formatoptions+=mM
 set nobomb " Don' use Unicode
@@ -708,6 +717,16 @@ endif
 " Convert fileencoding
 nmap <leader>eg :set fenc=gbk<cr>,w
 nmap <leader>ee :set fenc=utf-8<cr>,w
+
+function QfMakeConv()
+   let qflist = getqflist()
+   for i in qflist
+      let i.text = iconv(i.text, "cp936", "utf-8")
+   endfor
+   call setqflist(qflist)
+endfunction
+
+au QuickfixCmdPost make call QfMakeConv()
 
 " end }}}
 
@@ -763,4 +782,4 @@ nmap <leader>.cdos :cd d:\projects\opensearch\<cr>
 
 "end }}}
 
-"æµ‹è¯•ä¸­æ–‡
+"²âÊÔÖĞÎÄ

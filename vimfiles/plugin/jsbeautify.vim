@@ -4,7 +4,6 @@ endif
 let loaded_jsbeautify = 3
 
 
-
 function! s:trim_output()
 	while len(s:output) > 0 && (s:output[len(s:output)-1] == " " || s:output[len(s:output)-1] == s:indent_string)
 		call remove(s:output, -1)
@@ -620,4 +619,4 @@ function! g:Jsbeautify()
 	:put!0
 endfunction
 
-nnoremap <silent> <leader>ff :call g:Jsbeautify()<cr>
+nnoremap <silent> <leader>jsb :call g:Jsbeautify()<cr>
